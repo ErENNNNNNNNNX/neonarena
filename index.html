@@ -110,7 +110,7 @@ body::after{bottom:0;height:190px;background:linear-gradient(transparent,rgba(20
 #seatCard{width:min(360px,100%)}
 .eyebrow{font-size:10px}.count{font-size:13px}
 .tools{margin:0 auto}
-body:not(.adm) #adminBtn,body:not(.adm) #reelBtn{display:none!important}
+body:not(.adm) .tools{display:none!important}body:not(.adm) #adminBtn,body:not(.adm) #reelBtn{display:none!important}
 .panel.mini{width:min(236px,100%);padding:10px;border-radius:16px}
 .panel.mini .label{margin:6px 0 3px;font-size:10px}
 .panel.mini input{padding:8px 10px;font-size:13px}
@@ -203,13 +203,13 @@ input,textarea,select{box-sizing:border-box;max-width:100%}
 </div>
 
 <div class="dock">
-  <div class="panel" id="seatCard">
+  <div class="panel" id="seatCard" style="display:none">
     <h2>Pick a seat</h2>
     <p>Drag to look around, scroll or pinch to zoom, tap any seat to see who sits there.</p>
   </div>
   <div class="tools">
-    <button class="btn alt" id="spin" type="button">Auto-orbit: on</button>
-    <button class="btn alt" id="home" type="button">Full view</button>
+    <button class="btn alt" id="spin" type="button" style="display:none">Auto-orbit: on</button>
+    <button class="btn alt" id="home" type="button" style="display:none">Full view</button>
     <button class="btn alt" id="reelBtn" type="button">Reel</button>
     <button class="btn" id="adminBtn" type="button">Admin</button>
   </div>
@@ -284,7 +284,8 @@ input,textarea,select{box-sizing:border-box;max-width:100%}
       <label class="label" for="filmLen">Length</label><select id="filmLen"><option value="60">1 minute</option><option value="120" selected>2 minutes</option><option value="180">3 minutes</option></select>
       <label class="label" for="filmFmt">Video shape</label><select id="filmFmt"><option value="wide">Wide 16:9 (cinema)</option><option value="tall">Vertical 9:16 (reel)</option></select>
       <label class="label">Show in the film</label>
-      <label style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:14px"><input type="checkbox" data-sc="fa" checked>Aerial view of the arena</label><label style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:14px"><input type="checkbox" data-sc="fg" checked>Grand entrance gate</label><label style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:14px"><input type="checkbox" data-sc="fb" checked>Scoreboard</label><label style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:14px"><input type="checkbox" data-sc="ft" checked>VIP towers</label><label style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:14px"><input type="checkbox" data-sc="fs" checked>Stands and crowd</label><label style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:14px"><input type="checkbox" data-sc="fn" checked>Banners and photos</label><label style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:14px"><input type="checkbox" data-sc="fp" checked>Pitch and players</label><label style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:14px"><input type="checkbox" data-sc="fq" checked>Seated people</label><label style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:14px"><input type="checkbox" data-sc="fo" checked>Surroundings and sky</label>
+      <label style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:14px"><input type="checkbox" data-sc="fa" checked>Aerial view of the arena</label><label style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:14px"><input type="checkbox" data-sc="fg" checked>Grand entrance gate</label><label style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:14px"><input type="checkbox" data-sc="fb" checked>Scoreboard</label><label style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:14px"><input type="checkbox" data-sc="fv" checked>Big screen and its video</label><label style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:14px"><input type="checkbox" data-sc="ft" checked>VIP towers</label><label style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:14px"><input type="checkbox" data-sc="fs" checked>Stands and crowd</label><label style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:14px"><input type="checkbox" data-sc="fn" checked>Banners and photos</label><label style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:14px"><input type="checkbox" data-sc="fp" checked>Pitch and players</label><label style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:14px"><input type="checkbox" data-sc="fq" checked>Seated people</label><label style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:14px"><input type="checkbox" data-sc="fo" checked>Surroundings and sky</label>
+      <label class="label">Video on the big screen</label><p>Choose a video from your phone. It plays on the gate big screen while the film is recorded, and the film shows the screen. It stays on this device only.</p><div class="row"><label class="btn" style="cursor:pointer;display:inline-block">Choose screen video<input type="file" id="fvFile" accept="video/*" hidden></label><button class="btn alt" id="fvRm" type="button">Remove</button></div>
       <label class="label" for="filmCam">Camera</label><select id="filmCam"><option value="mix">Auto shots + my camera spots</option><option value="own">Only my camera spots</option></select>
       <p style="margin-top:8px">Camera spots: drag or pinch the camera to the place you want, then tap Save this view. The film shoots from those places.</p>
       <div class="status" id="spInfo"></div><div class="row" id="spList"></div>
@@ -390,7 +391,7 @@ for(q=0;q<TOWERS;q++){
 }
 function isVip(i){return i>=NB}
 function vipHidden(i){if(i<NB)return false;var j=i-NB,t=(j/PER_TOWER)|0,k=j%PER_TOWER;return HIDT.indexOf(t)>=0||k<1||k>VIPKEEP}
-function nxt(i,d){var k=0;do{i=(i+d+N)%N;k++}while(vipHidden(i)&&k<N);return i}
+function nxt(i,d){var k=0;do{i=(i+d+N)%N;k++}while((vipHidden(i)||blk(i))&&k<N);return i}
 function blk(i){var r=seatRow[i];return r===20||r===21||r===40||r===41||(i<NB&&seatPos[i*3+2]>0&&Math.abs(seatPos[i*3])<SEATW)} // rows with banners / walkways: no chairs
 function seatLabel(i){return isVip(i)?"VIP Town "+seatSec[i]+" · Seat "+seatNo[i]:"Section "+seatSec[i]+" · Row "+seatRow[i]+" · Seat "+seatNo[i]}
 var ROWC=[0xe5253a,0xf1efe8,0x3a3d46]; // orange / green / pink rows, like the reference stadium seats
@@ -613,7 +614,7 @@ var cloudRoot=new THREE.Group();
     tw.setMatrixAt(i,d.matrix);rf.setMatrixAt(i,d.matrix);pl.setMatrixAt(i,d.matrix);d.rotation.y+=.5;d.updateMatrix();pn.setMatrixAt(i,d.matrix);pn.setColorAt(i,cc.setHex(PALETTE[(i*4+1)%15]))}
   var bn=new THREE.InstancedMesh(new THREE.PlaneGeometry(2.3,2.9),new THREE.MeshBasicMaterial({side:THREE.DoubleSide}),400),bi=0;
   [[20,120],[40,170]].forEach(function(b){var r0=b[0]-.5,A=ringA(r0)*.996,B=ringB(r0)*.996,y0=yAt(b[0]-1)+1.7;
-    for(i=0;i<b[1];i++){var bpt=sqPt(A,B,i/b[1]);x=bpt[0];z=bpt[1];d.position.set(x,y0,z);d.rotation.set(0,sqRot(A,B,x,z),0);d.scale.setScalar(z>0&&Math.abs(x)<SEATW?1e-4:1);d.updateMatrix();bn.setMatrixAt(bi,d.matrix);(window.__bnm=window.__bnm||[]).push(d.matrix.clone());bn.setColorAt(bi,cc.setHex(PALETTE[(i*5+b[0])%15]));bi++}});
+    for(i=0;i<b[1];i++){var bpt=sqPt(A,B,i/b[1]);x=bpt[0];z=bpt[1];d.position.set(x,y0,z);d.rotation.set(0,sqRot(A,B,x,z),0);d.scale.setScalar(z>0&&Math.abs(x)<19?1e-4:1);d.updateMatrix();bn.setMatrixAt(bi,d.matrix);(window.__bnm=window.__bnm||[]).push(d.matrix.clone());bn.setColorAt(bi,cc.setHex(PALETTE[(i*5+b[0])%15]));bi++}});
   bn.count=bi;window.__bn=bn;[bn].forEach(function(m){m.frustumCulled=false;scene.add(m)});}catch(e){__err("turrets: "+e.message)}
 })();
 
@@ -702,7 +703,7 @@ var cloudRoot=new THREE.Group();
   window.__scrClear=function(keepUrl){if(scrV){try{scrV.pause();scrV.removeAttribute("src");scrV.load();scrV.remove()}catch(e){}scrV=null}
     if(scrVT){scrVT.dispose();scrVT=null}vidMat.map=null;vidM.visible=false;scrMat.map=scrTex;scrMat.color.setHex(0xffffff);scrMat.needsUpdate=true;if(!keepUrl)scrUrl=""};
   window.__scrSet=function(url){
-    if(!url||!/^\/_blob\/[0-9a-f]{32}$/.test(url)){window.__scrClear();return}
+    if(!url||!(/^\/_blob\/[0-9a-f]{32}$/.test(url)||/^blob:/.test(url))){window.__scrClear();return}
     if(url===scrUrl)return;window.__scrClear(true);scrUrl=url;
     var v=document.createElement("video");v.muted=true;v.defaultMuted=true;v.loop=true;v.autoplay=true;v.playsInline=true;v.preload="auto";v.setAttribute("playsinline","");v.setAttribute("muted","");
     v.style.cssText="position:fixed;left:0;top:0;width:2px;height:2px;opacity:.01;pointer-events:none";document.body.appendChild(v);scrV=v;
@@ -868,8 +869,8 @@ var POOL=150,figs=[],figSeat=[],figTick=0,prevT=[],instOf=new Map(),baseInit=0,p
 for(var fk=0;fk<POOL;fk++){var fm=new THREE.Mesh(sitG[0],figMats[0]);fm.visible=false;fm.frustumCulled=false;fm.userData.seat=-1;scene.add(fm);figs.push(fm);figSeat.push(-1)}
 var peopleMesh=new THREE.InstancedMesh(lightG,new THREE.MeshLambertMaterial({color:0xffffff,vertexColors:true,emissive:0x0c0c0c}),PMAX);
 peopleMesh.frustumCulled=false;peopleMesh.count=0;peopleMesh.setColorAt(0,new THREE.Color(1,1,1));scene.add(peopleMesh);
-var sd=new THREE.Object3D();
-function seatM(i){sd.position.set(seatPos[i*3],seatPos[i*3+1],seatPos[i*3+2]);sd.rotation.set(0,seatRot[i],0);sd.scale.setScalar(.95);sd.updateMatrix();return sd.matrix}
+var seatDummy=new THREE.Object3D();
+function seatM(i){seatDummy.position.set(seatPos[i*3],seatPos[i*3+1],seatPos[i*3+2]);seatDummy.rotation.set(0,seatRot[i],0);seatDummy.scale.setScalar(.95);seatDummy.updateMatrix();return seatDummy.matrix}
 function figAssign(){
   var cp=camera.position,list=[];
   seats.forEach(function(v,i){var dx=seatPos[i*3]-cp.x,dy=seatPos[i*3+1]-cp.y,dz=seatPos[i*3+2]-cp.z,d=dx*dx+dy*dy+dz*dz;if(d<22500)list.push([d,i])});
@@ -1124,10 +1125,10 @@ renderer.domElement.addEventListener("pointerup",function(e){
   var nw=performance.now(),dbl=pick>=0&&pick===selected&&nw-lastTap<450;lastTap=nw;select(pick,dbl);
 });
 
-function bowlPick(cx,cy){var P=hitAt(cx,cy,false),s=sOf(P.x,P.z);if(!(s>-.5&&s<ROWS-.5))return;var r=Math.min(ROWS-1,Math.max(0,Math.round(s))),uu=sqU(ringA(r),ringB(r),Math.atan2(P.z/ringB(r),P.x/ringA(r)));var k=Math.min(counts[r]-1,Math.floor(uu*counts[r]));return {distance:1e9,instanceId:RS[r]+k}}
+function bowlPick(cx,cy){var P=hitAt(cx,cy,false),s=sOf(P.x,P.z);if(!(s>-.5&&s<ROWS-.5))return;var r=Math.min(ROWS-1,Math.max(0,Math.round(s))),uu=sqU(ringA(r),ringB(r),Math.atan2(P.z/ringB(r),P.x/ringA(r)));var k=Math.min(counts[r]-1,Math.floor(uu*counts[r]));if(blk(RS[r]+k))return;return {distance:1e9,instanceId:RS[r]+k}}
 /* ---------- seat card ---------- */
 function renderCard(){
-  var el=$("seatCard");
+  var el=$("seatCard");el.style.display=selected<0?"none":"";
   if(selected<0){el.innerHTML="<h2>Pick a seat</h2><p>Drag to look around, scroll or pinch to zoom, tap any chair to see who sits there.</p>";return}
   var v=seats.get(selected);
   var h="<h2>"+seatLabel(selected)+"</h2>";
@@ -1327,6 +1328,12 @@ $("spUndo").onclick=function(){spots.pop();spSave();spShow()};
 $("spClr").onclick=function(){spots=[];spSave();spShow()};
 $("filmDet").addEventListener("toggle",function(){document.body.classList.toggle("camset",this.open)});
 document.body.classList.add("camset");spShow();
+var fvUrl="";
+$("fvFile").onchange=function(){var f=this.files&&this.files[0];this.value="";if(!f)return;
+  if(!(/^video\//.test(f.type)||/\.(mp4|webm|mov|m4v)$/i.test(f.name))){setStatus("reelStatus","Please choose a video file (MP4 or WebM).");return}
+  if(fvUrl){try{URL.revokeObjectURL(fvUrl)}catch(e){}}
+  fvUrl=URL.createObjectURL(f);window.__scrSet(fvUrl);setStatus("reelStatus","Video is on the big screen. It plays while you record the film (this device only).")};
+$("fvRm").onclick=function(){window.__scrSet("");if(fvUrl){try{URL.revokeObjectURL(fvUrl)}catch(e){}}fvUrl="";setStatus("reelStatus","Video removed from the big screen.")};
 
 var V3=function(x,y,z){return new THREE.Vector3(x,y,z)};
 function fPath(a,b,ta,tb,ef){ef=ef||sE;return function(u){var e=ef(u);camera.position.set(a.x+(b.x-a.x)*e,a.y+(b.y-a.y)*e,a.z+(b.z-a.z)*e);controls.target.set(ta.x+(tb.x-ta.x)*e,ta.y+(tb.y-ta.y)*e,ta.z+(tb.z-ta.z)*e)}}
@@ -1375,8 +1382,13 @@ G.fo=function(D){var o=[];o.push({w:1,fn:fOrb(V3(0,30,0),560,480,10,16,2.2,3.6)}
   if(D>16)o.push({w:1,fn:fOrb(V3(0,260,0),600,420,-30,-150,5.5,4.3)});return o};
 G.sp=function(D){return spots.map(function(s){var t=V3(s.t[0],s.t[1],s.t[2]),o0=V3(s.p[0],s.p[1],s.p[2]).sub(t);
   return {w:1,fn:function(u){var e=sE(u),a=.22*e,k=1-.07*e,ca=Math.cos(a),sa=Math.sin(a);camera.position.set(t.x+(o0.x*ca+o0.z*sa)*k,t.y+o0.y*k,t.z+(-o0.x*sa+o0.z*ca)*k);controls.target.copy(t)}}})};
-var FORDER=["fa","fg","fb","ft","fs","fn","fp","fq","fo","sp"],FW={fa:1.3,fg:1.3,fb:.8,ft:1.6,fs:1.6,fn:1.1,fp:1.3,fq:1.8,fo:1,sp:1},
-    FT={fa:"AERIAL VIEW",fg:"GRAND ENTRANCE",fb:"THE SCOREBOARD",ft:"VIP TOWERS",fs:"THE STANDS",fn:"BANNERS",fp:"ON THE PITCH",fq:"THE PEOPLE",fo:"THE SURROUNDINGS",sp:""};
+G.fv=function(D){var gz=GZ0,t=V3(0,49,gz-2.4),o=[];
+  o.push({w:1,fn:fPath(V3(-48,36,gz-125),V3(30,46,gz-62),t,t)});
+  if(D>8)o.push({w:1.1,fn:fPath(V3(0,47,gz-105),V3(0,49,gz-36),t,t,easeOut)});
+  if(D>15)o.push({w:1,fn:fOrb(t,64,46,-10,2,Math.PI-.55,Math.PI+.55)});
+  return o};
+var FORDER=["fa","fg","fv","fb","ft","fs","fn","fp","fq","fo","sp"],FW={fa:1.3,fg:1.3,fv:1.3,fb:.8,ft:1.6,fs:1.6,fn:1.1,fp:1.3,fq:1.8,fo:1,sp:1},
+    FT={fa:"AERIAL VIEW",fg:"GRAND ENTRANCE",fv:"THE BIG SCREEN",fb:"THE SCOREBOARD",ft:"VIP TOWERS",fs:"THE STANDS",fn:"BANNERS",fp:"ON THE PITCH",fq:"THE PEOPLE",fo:"THE SURROUNDINGS",sp:""};
 function buildFilm(L){
   var own=$("filmCam").value==="own"&&spots.length>0,on={};
   Array.prototype.forEach.call(document.querySelectorAll("#filmDet input[data-sc]"),function(c){on[c.getAttribute("data-sc")]=c.checked});
@@ -1794,8 +1806,8 @@ function setZone(z,silent,q){zone=z;if(z==="v"&&q!=null)vq=q;
   controls.maxDistance=z==="b"?3:z==="v"?45:90;
   if(!silent){var ps=zPose(z,vq);fly={t0:performance.now(),dur:1400,p0:camera.position.clone(),t0v:controls.target.clone(),p1:ps[0],t1v:ps[1]};select(-1);controls.autoRotate=false;syncSpin()}}
 (function(){var st=document.createElement("style");
-  st.textContent="#zoneBar{position:fixed;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));z-index:6;display:flex;flex-direction:column;gap:6px;pointer-events:none}#zoneBar>div{display:flex;gap:6px;overflow-x:auto;pointer-events:auto;padding:2px 0}#zoneBar .btn{flex:0 0 auto;padding:9px 13px;font-size:13px;border-radius:999px;white-space:nowrap}body.clean #zoneBar,body.recording #zoneBar{display:none!important}";document.head.appendChild(st);
-  zoneBar=document.createElement("div");zoneBar.id="zoneBar";zoneBar.hidden=true;zoneBar.innerHTML='<div id="zRow"></div><div id="zVip" hidden></div>';document.body.appendChild(zoneBar);
+  st.textContent="#zoneBar{position:fixed;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));z-index:6;display:flex;flex-direction:column;gap:6px;pointer-events:none}#zoneBar>div{display:flex;gap:6px;overflow-x:auto;pointer-events:auto;padding:2px 0}#zoneBar #zTog{align-self:flex-end;pointer-events:auto;padding:5px 11px!important;font-size:12px!important}#zoneBar.zc #zRow,#zoneBar.zc #zVip{display:none!important}#zoneBar .btn{flex:0 0 auto;padding:9px 13px;font-size:13px;border-radius:999px;white-space:nowrap}body.clean #zoneBar,body.recording #zoneBar{display:none!important}";document.head.appendChild(st);
+  zoneBar=document.createElement("div");zoneBar.id="zoneBar";zoneBar.hidden=true;zoneBar.innerHTML='<button type="button" id="zTog" class="btn alt">Hide \u25be</button><div id="zRow"></div><div id="zVip" hidden></div>';document.body.appendChild(zoneBar);$("zTog").onclick=function(){var c=zoneBar.classList.toggle("zc");this.textContent=c?"Stages \u25b4":"Hide \u25be"};
   var first=-1;for(var q=0;q<TOWERS;q++){if(HIDT.indexOf(q)>=0)continue;if(first<0)first=q;(function(q){var b=document.createElement("button");b.type="button";b.className="btn alt";b.dataset.q=q;b.textContent="VIP Town "+(q+1);b.onclick=function(){setZone("v",false,q)};$("zVip").appendChild(b)})(q)}
   [["g","Ground"],["m","Medial"],["t","Top"],["v","VIP"],["b","Bench"]].forEach(function(a){var b=document.createElement("button");b.type="button";b.className="btn alt";b.dataset.z=a[0];b.textContent=a[0]==="b"?"Bench":a[1]+" stage";if(a[0]==="v")b.textContent="VIP stage";
     b.onclick=function(){setZone(a[0],false,a[0]==="v"?(vq>=0?vq:first):null)};$("zRow").appendChild(b)});
